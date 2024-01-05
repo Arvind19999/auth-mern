@@ -4,9 +4,11 @@ import dotenv from "dotenv";
 
 // import { User } from "./models/user.js";
 import userRoutes   from "./routes/user.js"
+import userAuthRoutes from "./routes/auth.js"
 
 dotenv.config();
 const app = express();
+app.use(express.json());
 
 
 // const user = new User({userName : "XYZ", email : "xyz.arvind99@gmail.com", password : "kffdskjfhdkjf" })
@@ -28,10 +30,6 @@ app.listen(3000,()=>{
     console.log("Your app is listing at port 3000!!!")
 })
 
-// app.get('/',(req,res,next)=>{
-//     res.status(200).json({
-//         message  : "API is working properly"
-//     })
-// })
-
 app.use("/api/user",userRoutes);
+
+app.use("/api/user",userAuthRoutes);
