@@ -1,5 +1,5 @@
 import  { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,7 +11,7 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false)
-
+  const navigate = useNavigate()
 const submitHandler=async (e)=>{
     e.preventDefault();
 try {
@@ -29,6 +29,7 @@ try {
         position: toast.POSITION.TOP_RIGHT,
       });
       
+      navigate("/login");
 } catch (error) {
   setIsLoading(false)
   console.log(error)

@@ -3,8 +3,6 @@ import Jwt  from "jsonwebtoken";
 
 import { User } from "../models/user.js";
 import { errorHandler } from "../utils/error.js";
-// import { JsonWebTokenError } from "jsonwebtoken";
-
 
 export const postSignUp  = async (req,res,next)=>{
     const {userName,email,password} = req.body;
@@ -33,15 +31,14 @@ export const postLogin  = async (req,res,next)=>{
         if(!isMatched){
             return next(errorHandler(401, "Invalid Email or Password"))
         }
+        const {password : hashPassword, ...userDetails} = user._doc;
         const token = Jwt.sign({id : user._id},process.env.JWT_SECRETE);
-        const {password : hashPassword, ...userDetails} = user._doc
-        res.cookie("token",token,{httpOnly : true,maxAge : 360000})
+        res.cookie("access_token",token,{httpOnly : true, secure : false })
         .status(200).json({
             success  : true,
             user : userDetails,
             token : token
         })
-        // res.json({token : token})
     } catch (error) {
         next(error);
     }

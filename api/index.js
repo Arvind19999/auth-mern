@@ -2,26 +2,25 @@ import express from "express"
 import mongoose from "mongoose";
 import cors from "cors"
 import dotenv from "dotenv";
+// import cookieParser from "cookie-parser";
 
 // import { User } from "./models/user.js";
 import userRoutes   from "./routes/user.js"
 import userAuthRoutes from "./routes/auth.js"
 
 dotenv.config();
+
+
+const corsOptions = {
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    credentials: true,
+  };
+
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors(corsOptions));
+// app.use(cookieParser());
 
-
-
-// const user = new User({userName : "XYZ", email : "xyz.arvind99@gmail.com", password : "kffdskjfhdkjf" })
-// user.save()
-// .then(usr=>{
-//     console.log(usr)
-// })
-// .catch(err=>{
-//     console.log(err)
-// })
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{
     console.log("Success fully connected to database")
