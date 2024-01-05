@@ -1,12 +1,11 @@
 import bcrypt from "bcrypt";
 
 import { User } from "../models/user.js";
+import { errorHandler } from "../utils/error.js";
 
 
-export const postSignUp  = async (req,res)=>{
+export const postSignUp  = async (req,res,next)=>{
     const {userName,email,password} = req.body;
-
-
     try {
         const hashPassword = await bcrypt.hash(password,10)
         const newUser = new User({userName : userName,email : email,password : hashPassword})
@@ -16,10 +15,11 @@ export const postSignUp  = async (req,res)=>{
         user  : newUser
     })        
     } catch (error) {
-        res.status(500).json({
-            message  : "something went wrong",
-            Error : error.message
-        })  
+        next(error);
+        // res.status(500).json({
+        //     message  : "something went wrong",
+        //     Error : error.message
+        // })  
     }
 
 }
