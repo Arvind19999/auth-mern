@@ -1,5 +1,6 @@
 import express from "express"
 import mongoose from "mongoose";
+import cors from "cors"
 import dotenv from "dotenv";
 
 // import { User } from "./models/user.js";
@@ -8,7 +9,9 @@ import userAuthRoutes from "./routes/auth.js"
 
 dotenv.config();
 const app = express();
+app.use(cors());
 app.use(express.json());
+
 
 
 // const user = new User({userName : "XYZ", email : "xyz.arvind99@gmail.com", password : "kffdskjfhdkjf" })
@@ -32,7 +35,7 @@ app.listen(3000,()=>{
 
 app.use("/api/user",userRoutes);
 
-app.use("/api/user",userAuthRoutes);
+app.use("/api/auth",userAuthRoutes);
 
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode || 500
