@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import About from './pages/About';
 import Profile from './pages/Profile';
 import Contact from './pages/Contact';
+import Prac from './pages/Prac'
 
 
 
@@ -20,6 +21,7 @@ const App = () => {
   <Route path='/about' element={<About />}/>
   <Route path='/profile' element={<Profile />}/>
   <Route path='/contact' element={<Contact />}/>
+  <Route path='/contact' element={<Prac />}/>
 </Routes>
 </BrowserRouter>
   )
