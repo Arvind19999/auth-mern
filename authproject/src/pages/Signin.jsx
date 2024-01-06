@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 axios.defaults.withCredentials = true;
 
 import { signInStart,signInSuccess,signInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 const Signin = () => {
     const [email, setEmail] = useState("");
@@ -60,7 +61,7 @@ try {
             <input type="email" 
                     name="userEmail" 
                     id="email" 
-                    placeholder="Enter User"
+                    placeholder="Enter User Email"
                     value = {email}
                     onChange={(e)=>setEmail(e.target.value)}
                     className="p-3 m-3 bg-slate-200 rounded-2xl"
@@ -77,9 +78,9 @@ try {
             <button type="submit"  
               disabled= {isLoading}
                     className="p-3 mt-10 text-lg text-white uppercase bg-slate-700 rounded-2xl hover:opacity-90 disabled:opacity-70">
-                      {isLoading?"Loading..." : "Log In"}
-                      
+                      {isLoading?"Loading..." : "Log In"}   
             </button>
+            <OAuth />
             <ToastContainer />
             <div className="flex mt-2">
               <p> Don't Have An Account?</p>

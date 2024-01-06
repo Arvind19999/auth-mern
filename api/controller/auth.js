@@ -43,3 +43,41 @@ export const postLogin  = async (req,res,next)=>{
         next(error);
     }
 }
+
+export const postGoogleLogIn = async (req,res,next)=>{
+    try {
+        const email  = req.body.email;
+        const user = await User.findOne({email : email});
+        if(!user){
+            const generatePasssword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
+            // const generatePasssword = "passwoerd123"
+            const userName = req.body.userName;
+            const email = req.body.email;
+            const hashPassword = await  bcrypt.hash(generatePasssword,10);
+            const profilePicture = req.body.profilePicture;
+            const createNewUser = new User({userName :userName,email : email,password:hashPassword,profilePicture  :profilePicture})
+            await createNewUser.save()
+            const token = Jwt.sign({id:createNewUser._id},process.env.JWT_SECRETE);
+            res.cookie("access_token",token,{httpOnly : true, secure:false})
+            .status(201).json({
+                success : true,
+                message : "User Created Successfully",
+                user : createNewUser,
+                token : token
+            })  
+        }
+        else{
+            const {password : hashPassword, ...userDetails} = user._doc;
+            const token = Jwt.sign({id :user._id},process.env.JWT_SECRETE);
+            res.cookie("access_token",token,{httpOnly : true, secure:false})
+            .status(200).json({
+                success : true,
+                message : "User LogedIn Successfully",
+                user : userDetails,
+                token : token
+            })
+        }
+    } catch (error) {
+        next(error)
+    }
+}

@@ -5,6 +5,8 @@ import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import OAuth from '../components/OAuth';
+
 
 const Signup = () => {
     const [userName, setUserName] = useState("");
@@ -57,7 +59,7 @@ try {
             <input type="email" 
                     name="userEmail" 
                     id="email" 
-                    placeholder="Enter User"
+                    placeholder="Enter User Email" 
                     value = {email}
                     onChange={(e)=>setEmail(e.target.value)}
                     className="p-3 m-3 bg-slate-200 rounded-2xl"
@@ -74,9 +76,9 @@ try {
             <button type="submit"  
               disabled= {isLoading}
                     className="p-3 mt-10 text-lg text-white uppercase bg-slate-700 rounded-2xl hover:opacity-90 disabled:opacity-70">
-                      {isLoading?"Loading..." : "Sign Up"}
-                      
+                      {isLoading?"Loading..." : "Sign Up"}     
             </button>
+            <OAuth />
             <ToastContainer />
             <div className="flex mt-2">
               <p>Already Have An Account?</p>
