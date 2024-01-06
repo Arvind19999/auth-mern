@@ -2,21 +2,28 @@ import   { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 axios.defaults.withCredentials = true;
 
+import { signInStart,signInSuccess,signInFailure } from '../redux/user/userSlice';
+
 const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false)
+    // const [isLoading, setIsLoading] = useState(false)
+    const {isLoading} = useSelector((state)=>state.user)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-
+console.log(isLoading)
+// console.log(errors.response)
 const submitHandler=async (e)=>{
     e.preventDefault();
 try {
-    setIsLoading(true)
+    // setIsLoading(true)
+    dispatch(signInStart()) 
   const userLogin = await axios.post("http://localhost:3000/api/auth/user/login",{
     email  :email,
     password : password
@@ -24,8 +31,9 @@ try {
     withCredentials: true,
   })
 
-  console.log(userLogin);
-  setIsLoading(false)
+  console.log(userLogin.data);
+  // setIsLoading(false)
+  dispatch(signInSuccess(userLogin))
       // Show a success toast
       toast.success('User Logged in Successfully', {
         position: toast.POSITION.TOP_RIGHT,
@@ -34,9 +42,9 @@ try {
       navigate('/')
       
 } catch (error) {
-  setIsLoading(false)
-  console.log(error)
-  toast.error('Something went wrong try later', {
+  dispatch(signInFailure(error.response.data["errorMessage"]))
+  console.log(error.response.data["errorMessage"])
+  toast.error(error.response.data["errorMessage"], {
     position: toast.POSITION.TOP_RIGHT,
   });
 }
